@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Tab from './singleComponents/tab';
 import './tabs.css';
 
@@ -7,25 +7,123 @@ function TabSection() {
 
     
     let x = 0;
-    while (x < 23){
+    while (x < 1){
         sampleArray.push(
             {
-                heading: "The direct comiseration of the Great Lake of China. On the a kd voi t ttish thsis k seoskwo to ths sitlhs is tg",
-                body: "This is a very long piece of Infomrration",
+                heading: "The direct comiseration of the Great Lake of China.",
+                body: "This is a very long piece of Information",
+                date: "10534500000",
+                category: null
+            }
+        )
+
+        sampleArray.push(
+            {
+                heading: "The building of the notes app.",
+                body: "This is a very long piece of Information",
+                date: "1002342300000",
+                category: null
+            }
+        )
+
+        sampleArray.push(
+            {
+                heading: "Finding purpose in Computer Science.",
+                body: "This is a very long piece of Information",
+                date: "100035234530000",
+                category: null
+            }
+        )
+
+        sampleArray.push(
+            {
+                heading: "The colonization of Africa.",
+                body: "This is a very long piece of Information",
+                date: "1053450023000",
+                category: null
+            }
+        )
+
+        sampleArray.push(
+            {
+                heading: "The research on human evolution.",
+                body: "This is a very long piece of Information",
+                date: "100235930320000",
+                category: null
+            }
+        )
+
+        sampleArray.push(
+            {
+                heading: "My favourite poems.",
+                body: "This is a very long piece of Information",
+                date: "10003923345000",
                 category: null
             }
         )
         
         x++
-        console.log(x)
     }
-    const [notesInfo, SetNotesInfo] = useState(sampleArray)
+    const [notesInfo, setNotesInfo] = useState(sampleArray)
+    const [displayNotes, setDisplayNotes] = useState(notesInfo)
+    const [currentsearch, setCurrentSearch] = useState("")
+
+    useEffect(() => {
+        if (currentsearch.substring(0, 1) === ":"){
+            setDisplayNotes(notesInfo.filter(note => {
+                const noteCategory = note.category ? (note.category).toLowerCase() : "none"
     
-    const arrayElements = notesInfo.map((note, index) => {
+                return (
+                    noteCategory.includes(currentsearch.substring(1))
+                )
+            }))
+        } else {
+            setDisplayNotes(notesInfo.filter(note => {
+                const noteTitle = (note.heading).toLowerCase()
+    
+                return (
+                    noteTitle.includes(currentsearch)
+                )
+            }))
+        }
+
+    }, [notesInfo])
+
+    function findNote(event){
+        const {value} = event.target
+        const searchValue = value.toLowerCase()
+
+        if (searchValue.substring(0, 1) === ":"){
+            setDisplayNotes(notesInfo.filter(note => {
+                const noteCategory = note.category ? (note.category).toLowerCase() : "none"
+
+                setCurrentSearch(searchValue)
+    
+                return (
+                    noteCategory.includes(searchValue.substring(1))
+                )
+            }))
+        } else {
+            setDisplayNotes(notesInfo.filter(note => {
+                const noteTitle = (note.heading).toLowerCase()
+
+                setCurrentSearch(searchValue)
+    
+                return (
+                    noteTitle.includes(searchValue)
+                )
+            }))
+        }
+    }
+
+    const arrayElements = displayNotes.map((note, index) => {
         return (
             <Tab
                 key = {index}
                 note = {note}
+                setNotesInfo = {setNotesInfo}
+                notesInfo={notesInfo}
+                sampleArray = {sampleArray}
             />
         )
     })
@@ -33,7 +131,7 @@ function TabSection() {
     return (
         <main className='tab-page'>
             <h1 className='heading'>NOTES</h1>
-            <input className='search-notes-field' type='text' placeholder='Search for Notes...' />
+            <input className='search-notes-field' type='search' placeholder='Search for Notes...' onChange={findNote} />
             <section className='tabs-section'>
                 {arrayElements}
             </section>

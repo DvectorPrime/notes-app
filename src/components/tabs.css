@@ -36,14 +36,14 @@
 }
 
 .note-tab{
-    width: calc(100vw / 3.5);
+    width: 100%;
     max-height: 115px;
     overflow: hidden;
     background-color: rgb(27, 120, 241);
     border: 2px solid white;
     display: block;
     position: relative;
-    padding: 30px 10px;
+    padding: 40px 10px 30px 10px;
     border-radius: 10px;
     cursor: pointer;
 }
@@ -63,9 +63,43 @@
     border-bottom: 2px solid blue;
 }
 
+.note-tab ::placeholder{
+    color: black
+}
+
+.note-last-edited-time{
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    background-color: transparent;
+    font-weight: bold;
+}
+
 .note-tab h3{
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     text-align: center;
-    color: rgb(185, 236, 252);
-    text-overflow: ellipsis;
+    color: rgb(247, 253, 255);
+    max-height: calc(1.3rem * 2.5);
+    overflow: hidden;
+}
+
+@media screen and (max-width: 900px) {
+    .tabs-section{
+        grid-template-columns: 1fr 1fr;
+    }   
+}
+
+@media screen and (max-width: 600px) {
+    .search-notes-field{
+        font-size: 1rem;
+        width: 85%;
+    }
+
+    .tabs-section{
+        grid-template-columns: 1fr;
+    }   
+
+    .note-tab{
+        width: 100%;
+    }
 }
