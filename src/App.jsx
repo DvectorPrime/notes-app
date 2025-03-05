@@ -1,11 +1,17 @@
 import './App.css'
+import Login from './components/login'
+import TabSection from './components/Tabsection'
 import MainApp from './mainApp'
 
+import { UserProvider } from './context/CurrentUserContext'
+
 function App() {
+  /* This is where routing will occur */
 
   return (
-
-    <MainApp/>
+    <UserProvider>
+      <Login />
+    </UserProvider>
   )
 }
 

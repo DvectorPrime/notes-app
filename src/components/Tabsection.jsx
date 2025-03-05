@@ -3,6 +3,7 @@ import Tab from './singleComponents/tab';
 import './tabs.css';
 
 function TabSection() {
+    /*Generates Test array pending when you set up firebase */
     const sampleArray = []
 
     
@@ -64,10 +65,11 @@ function TabSection() {
         
         x++
     }
-    const [notesInfo, setNotesInfo] = useState(sampleArray)
-    const [displayNotes, setDisplayNotes] = useState(notesInfo)
-    const [currentsearch, setCurrentSearch] = useState("")
+    const [notesInfo, setNotesInfo] = useState(sampleArray) //to hold original notes info
+    const [displayNotes, setDisplayNotes] = useState(notesInfo) //to manage what is displayed to the user
+    const [currentsearch, setCurrentSearch] = useState("") //Holds state of user note search
 
+    /* To ensure that notes displayed are those specified by user when user to making changes to note category */
     useEffect(() => {
         if (currentsearch.substring(0, 1) === ":"){
             setDisplayNotes(notesInfo.filter(note => {
@@ -88,6 +90,8 @@ function TabSection() {
         }
 
     }, [notesInfo])
+
+    /* Note filtering algorithm */
 
     function findNote(event){
         const {value} = event.target
@@ -115,6 +119,8 @@ function TabSection() {
             }))
         }
     }
+
+    /* Tab Components to be displayed from display notes */
 
     const arrayElements = displayNotes.map((note, index) => {
         return (

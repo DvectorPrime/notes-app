@@ -1,4 +1,4 @@
-import TabSection from './components/tabs'
+import TabSection from './components/Tabsection'
 import NoteSection from './components/note'
 
 function MainApp(){
