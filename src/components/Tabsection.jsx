@@ -1,74 +1,42 @@
 import { useEffect, useState } from 'react';
+
+import { collection, getDocs } from 'firebase/firestore';
+
+import { db } from '../firebase/firebaseConfig';
+
 import Tab from './singleComponents/tab';
 import './tabs.css';
 
+import { useAppData } from '../context/CurrentUserContext';
+import { useNavigate } from 'react-router-dom';
+
+
 function TabSection() {
-    /*Generates Test array pending when you set up firebase */
-    const sampleArray = []
+    const {currentUser} = useAppData();
+    const [notesInfo, setNotesInfo] = useState([]) //to hold original notes info
 
-    
-    let x = 0;
-    while (x < 1){
-        sampleArray.push(
-            {
-                heading: "The direct comiseration of the Great Lake of China.",
-                body: "This is a very long piece of Information",
-                date: "10534500000",
-                category: null
-            }
-        )
-
-        sampleArray.push(
-            {
-                heading: "The building of the notes app.",
-                body: "This is a very long piece of Information",
-                date: "1002342300000",
-                category: null
-            }
-        )
-
-        sampleArray.push(
-            {
-                heading: "Finding purpose in Computer Science.",
-                body: "This is a very long piece of Information",
-                date: "100035234530000",
-                category: null
-            }
-        )
-
-        sampleArray.push(
-            {
-                heading: "The colonization of Africa.",
-                body: "This is a very long piece of Information",
-                date: "1053450023000",
-                category: null
-            }
-        )
-
-        sampleArray.push(
-            {
-                heading: "The research on human evolution.",
-                body: "This is a very long piece of Information",
-                date: "100235930320000",
-                category: null
-            }
-        )
-
-        sampleArray.push(
-            {
-                heading: "My favourite poems.",
-                body: "This is a very long piece of Information",
-                date: "10003923345000",
-                category: null
-            }
-        )
-        
-        x++
+    async function getNotes() {
+        const noteSnapShops = await getDocs(collection(db, currentUser.uid));
+        if (notesInfo.length === 0){
+            noteSnapShops.forEach((doc) => {
+                setNotesInfo(prev => [...prev, doc.data()]);
+            });
+        }
     }
-    const [notesInfo, setNotesInfo] = useState(sampleArray) //to hold original notes info
+
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!currentUser.uid){
+            navigate("/login")
+        } else {
+            getNotes()
+        }
+    }, [currentUser.uid])
+
     const [displayNotes, setDisplayNotes] = useState(notesInfo) //to manage what is displayed to the user
     const [currentsearch, setCurrentSearch] = useState("") //Holds state of user note search
-
+    
     /* To ensure that notes displayed are those specified by user when user to making changes to note category */
     useEffect(() => {
         if (currentsearch.substring(0, 1) === ":"){
@@ -129,7 +97,6 @@ function TabSection() {
                 note = {note}
                 setNotesInfo = {setNotesInfo}
                 notesInfo={notesInfo}
-                sampleArray = {sampleArray}
             />
         )
     })

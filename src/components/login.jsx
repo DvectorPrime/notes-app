@@ -1,42 +1,76 @@
-import {useContext} from 'react';
-import googleIcon from '../assets/google.png';
-import "./login.css"
-import { UserContext } from '../context/CurrentUserContext.jsx';
-
-import {app} from '../firebase/firebaseConfig'
-
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {app, db} from '../firebase/firebaseConfig'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import googleIcon from '../assets/google.png';
 
-const provider = new GoogleAuthProvider();
-
-const auth = getAuth(app);
-
-const { currentUser } = useContext(UserContext)
-
-async function handleLogin() {
-    try {
-        const result = await signInWithPopup(auth, provider);
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        console.log(user)
-
-        console.log(currentUser)
-        // IdP data available using getAdditionalUserInfo(result)
-    } catch (error) {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-    }
-}
+import { useAppData } from '../context/CurrentUserContext';
+import "./login.css"
 
 const Login = () => {
+    
+    const provider = new GoogleAuthProvider();
+    
+    const auth = getAuth(app);
+
+    const {currentUser, setCurrentUser} = useAppData()
+
+    const navigate = useNavigate()
+    
+    async function handleLogin() {
+        try {
+            const result = await signInWithPopup(auth, provider);
+
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+
+            // The signed-in user info.
+            const user = result.user;
+            console.log(user)
+            setCurrentUser(user)    
+            
+        } catch (error) {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(`${errorCode}`)
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+        }
+    }
+
+    async function getUserInformation() {
+        console.log(currentUser)
+        const notesRef = doc(db, currentUser.uid, "Welcome To Notes App")
+        
+        const notesInfoSnap = await getDoc(notesRef)
+        
+        const data = {
+            id: "Welcome To Notes App",
+            heading: "A guide on how to use the notes app",
+            body: "This is a very long piece of Information",
+            date: Date.now(),
+            category: "Welcome"
+         }
+        
+        if (notesInfoSnap.exists()){
+            navigate("/")
+        } else {
+            await setDoc(notesRef, data) 
+            navigate("/")
+        }
+    }
+    
+    useEffect(() => {
+        if (currentUser != ""){
+            getUserInformation()
+        }
+    }, [currentUser])
+
     return (
         <div className='login-page'>
             <title>Login</title>

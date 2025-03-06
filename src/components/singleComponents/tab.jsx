@@ -1,4 +1,12 @@
-function Tab({note, notesInfo, setNotesInfo, sampleArray}){
+import { db } from "../../firebase/firebaseConfig"
+import { doc, setDoc } from "firebase/firestore"
+
+import { useAppData } from "../../context/CurrentUserContext"
+
+
+function Tab({note, notesInfo, setNotesInfo}){
+    const { currentUser } = useAppData()
+
     /*To manage date information */
     const rawDate = note.date
     const date = new Date(Number(rawDate)).toDateString()
@@ -13,7 +21,7 @@ function Tab({note, notesInfo, setNotesInfo, sampleArray}){
 
         const holderNotesArray = notesInfo.map((note, i) => {
             if (index === i){
-                return {...note, category : value}
+                return {...note, category : value, date : Date.now()}
             } else {
                 return note
             }
@@ -23,9 +31,19 @@ function Tab({note, notesInfo, setNotesInfo, sampleArray}){
     }
 
     /*To change the category on firebase, This is done separate from local to reducing number of writes to the database */
-    function editCategory(event){
+    async function editCategory(event){
 
-        sampleArray[index].category = event.target.value
+        const notesRef = doc(db, currentUser.uid, note.id)
+        
+        const data = {
+            id: note.id,
+            heading: note.heading,
+            body: note.body,
+            date: Date.now(),
+            category: event.target.value
+        }
+        
+        await setDoc(notesRef, data)
 
     }
     
