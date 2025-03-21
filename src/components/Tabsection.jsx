@@ -7,18 +7,25 @@ import { db } from '../firebase/firebaseConfig';
 import Tab from './singleComponents/tab';
 import './tabs.css';
 
+import addSign from '../assets/add-sign.svg'
+import menuBar from '../assets/menu-bar.svg'
+import logOut from '../assets/logout.svg'
+import deleteIcon from '../assets/delete.svg'
+
 import { useAppData } from '../context/CurrentUserContext';
 import { useNavigate } from 'react-router-dom';
 
 
-function TabSection() {
-    const {currentUser} = useAppData();
+function TabSection({noteTabSection}) {
+    const {currentUser, setNotes} = useAppData();
     const [notesInfo, setNotesInfo] = useState([]) //to hold original notes info
 
+    const userPhotoURL = currentUser.photoURL
+
     async function getNotes() {
-        const noteSnapShops = await getDocs(collection(db, currentUser.uid));
+        const noteSnapShots = await getDocs(collection(db, currentUser.uid));
         if (notesInfo.length === 0){
-            noteSnapShops.forEach((doc) => {
+            noteSnapShots.forEach((doc) => {
                 setNotesInfo(prev => [...prev, doc.data()]);
             });
         }
@@ -59,6 +66,12 @@ function TabSection() {
 
     }, [notesInfo])
 
+    const [isMenuShowing, setIsMenuShowing] = useState(false)
+
+    function toggleMenu(){
+        setIsMenuShowing(prev => !prev)
+    }
+    
     /* Note filtering algorithm */
 
     function findNote(event){
@@ -97,15 +110,26 @@ function TabSection() {
                 note = {note}
                 setNotesInfo = {setNotesInfo}
                 notesInfo={notesInfo}
+                noteTabSection = {noteTabSection}
             />
         )
     })
 
     return (
-        <main className='tab-page'>
-            <h1 className='heading'>NOTES</h1>
-            <input className='search-notes-field' type='search' placeholder='Search for Notes...' onChange={findNote} />
-            <section className='tabs-section'>
+        <main className={`tab-page ${noteTabSection && 'note-tab-section'}`}>
+            <button className='menu-bar-button'><img src={menuBar} onClick={toggleMenu}/></button>
+            <aside className='menu-bar' style={{display: isMenuShowing ? 'block' : 'none'}}>
+                <div className='user-photo'>
+                    <img src={userPhotoURL} />
+                </div>
+                <h3 className='username'>{currentUser.displayName}</h3>
+                <button className='accounts-button log-out'><img src={logOut} />Log Out</button>
+                <button className='accounts-button delete-account'><img src={deleteIcon} />Delete Account</button>
+            </aside>
+            <h1 className={`heading ${noteTabSection && 'note-tab-section'}`}>NOTES</h1>
+            <input className={`search-notes-field ${noteTabSection && 'note-tab-section'}`} type='search' placeholder='Search for Notes...' onChange={findNote} />
+            <button className='add-note-button'><img src={addSign} /> Add Note</button>
+            <section className={`tabs-section ${noteTabSection && 'note-tab-section'}`}>
                 {arrayElements}
             </section>
         </main>

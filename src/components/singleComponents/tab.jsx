@@ -3,9 +3,12 @@ import { doc, setDoc } from "firebase/firestore"
 
 import { useAppData } from "../../context/CurrentUserContext"
 
+import { useNavigate } from "react-router-dom"
 
-function Tab({note, notesInfo, setNotesInfo}){
-    const { currentUser } = useAppData()
+
+function Tab({note, notesInfo, setNotesInfo, noteTabSection}){
+    const navigate = useNavigate()
+    const { currentUser, setCurrentNote } = useAppData()
 
     /*To manage date information */
     const rawDate = note.date
@@ -13,6 +16,12 @@ function Tab({note, notesInfo, setNotesInfo}){
 
     /* Hold specific note index */
     const index = notesInfo.indexOf(note)
+
+    function openNote(){
+        setCurrentNote(notesInfo[index])
+
+        navigate("/notes")
+    }
 
     /* Updates note category for local notes app */
     function updateCategory(event) {
@@ -48,14 +57,13 @@ function Tab({note, notesInfo, setNotesInfo}){
     }
     
     return (
-        <button className='note-tab'>
+        <button className={`note-tab ${noteTabSection && 'note-tab-section-heading'}`} onClick={openNote}>
             <input 
                 type='text' 
                 value={note.category !== null ? note.category : 'Add Category'} 
                 className='tab-category'
-                onBlur={editCategory}
-                onChange={updateCategory}
                 maxLength={20}
+                disabled
             />
             <div className="note-last-edited-time">{date}</div>
             <h3>{note.heading}</h3>

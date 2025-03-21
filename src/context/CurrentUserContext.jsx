@@ -6,13 +6,15 @@ const AppDataContext = createContext();
 // Defining a context provider component named 'AppDataProvider'
 export const AppDataProvider = ({ children }) => {
   // Using the useState hook to initialize and manage the currentUser and theme Variables 
+  const [notes, setNotes] = useState("")
   const [currentUser, setCurrentUser] = useState("");
   const [theme, setTheme] = useState("light");
+  const [currentNote, setCurrentNote] = useState("")
 
   // Returning the provider component to make the app data available to child components
   return (
     <AppDataContext.Provider
-      value={{ currentUser, setCurrentUser, theme, setTheme }}
+      value={{ notes, setNotes, currentUser, setCurrentUser, theme, setTheme, currentNote, setCurrentNote }}
     >
       {children}
     </AppDataContext.Provider>
