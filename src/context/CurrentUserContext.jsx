@@ -9,10 +9,13 @@ const AppDataContext = createContext();
 
 // Defining a context provider component named 'AppDataProvider'
 export const AppDataProvider = ({ children }) => {
-  // Using the useState hook to initialize and manage the currentUser and theme Variables 
+  // Using the useState hook to initialize and manage the important variables
   const [notesInfo, setNotesInfo] = useState([])
+  
   const [currentUser, setCurrentUser] = useState("");
+  
   const [theme, setTheme] = useState("light");
+  
   const [currentNote, setCurrentNote] = useState("")
 
   function receiveUpdates(){

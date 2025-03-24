@@ -5,3 +5,30 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
 }
+
+body{
+  /* background-color: black; */
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #555555ee; 
+  border-radius: 20px;
+}
+
+.tabs-section{
+  overflow: hidden;
+}
+
+.tabs-section:hover, .tabs-section:focus{
+  overflow: auto;
+}

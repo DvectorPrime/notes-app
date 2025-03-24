@@ -9,9 +9,8 @@ import './tabs.css';
 
 import addSign from '../assets/add-sign.svg'
 import menuBar from '../assets/menu-bar.svg'
+import closeIcon from '../assets/close.svg'
 import logo from '../assets/logo.png'
-import logOut from '../assets/logout.svg'
-import deleteIcon from '../assets/delete.svg'
 
 import { useAppData } from '../context/CurrentUserContext';
 import { useNavigate } from 'react-router-dom';
@@ -20,9 +19,9 @@ import { useNavigate } from 'react-router-dom';
 function TabSection({noteTabSection}) {
     const {currentUser, setCurrentUser, notesInfo, setNotesInfo, receiveUpdates, setCurrentNote} = useAppData();
 
-
     const userPhotoURL = currentUser.photoURL
 
+    //Update Note Info in User Context
     async function getNotes() {
         const noteSnapShots = await getDocs(collection(db, currentUser.uid));
         if (notesInfo.length === 0){
@@ -32,6 +31,7 @@ function TabSection({noteTabSection}) {
         }
     }
 
+    //Ensure User Authentication
     useEffect(() => {
         if (!currentUser.uid){
             navigate("/login")
@@ -55,7 +55,7 @@ function TabSection({noteTabSection}) {
                 return (
                     noteCategory.includes(currentsearch.substring(1))
                 )
-            }))
+            }).sort((noteA, noteB) => Number(noteB.date) - Number(noteA.date)))
         } else {
             setDisplayNotes(notesInfo.filter(note => {
                 const noteTitle = (note.heading).toLowerCase()
@@ -63,7 +63,7 @@ function TabSection({noteTabSection}) {
                 return (
                     noteTitle.includes(currentsearch)
                 )
-            }))
+            }).sort((noteA, noteB) => Number(noteB.date) - Number(noteA.date)))
         }
 
         console.log(notesInfo)
@@ -147,7 +147,7 @@ function TabSection({noteTabSection}) {
 
     return (
         <main className={`tab-page ${noteTabSection && 'note-tab-section'}`}>
-            <button className='menu-bar-button'><img src={menuBar} onClick={toggleMenu}/></button>
+            <button className='menu-bar-button'><img src={isMenuShowing ? closeIcon : menuBar} onClick={toggleMenu}/></button>
             <aside className='menu-bar' style={{display: isMenuShowing ? 'block' : 'none'}}>
                 <div className='user-photo'>
                     <img src={userPhotoURL} />
@@ -155,9 +155,13 @@ function TabSection({noteTabSection}) {
                 <h3 className='username'>{currentUser.displayName}</h3>
                 <button className='accounts-button log-out' onClick={logOut}><img src={logOut} />Log Out</button>
             </aside>
-            {/* <h1 className={`heading ${noteTabSection && 'note-tab-section'}`}>NOTES</h1> */}
             <div className={`logo-container ${noteTabSection && 'note-tab-section'}`}><img src={logo} alt="Notes App" /></div>
-            <input className={`search-notes-field ${noteTabSection && 'note-tab-section'}`} type='search' placeholder='Search for Notes...' onChange={findNote} />
+            <input 
+                className={`search-notes-field ${noteTabSection && 'note-tab-section'}`} 
+                type='search' 
+                placeholder='Search for Notes...' 
+                onChange={findNote} 
+            />
             <button className='add-note-button' onClick={addNote}><img src={addSign} /> Add Note</button>
             <section className={`tabs-section ${noteTabSection && 'note-tab-section'}`}>
                 {arrayElements}

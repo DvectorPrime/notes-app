@@ -10,14 +10,15 @@ import "./login.css"
 
 const Login = () => {
     
+    const {currentUser, setCurrentUser} = useAppData()
+    
     const provider = new GoogleAuthProvider();
     
     const auth = getAuth(app);
 
-    const {currentUser, setCurrentUser} = useAppData()
-
     const navigate = useNavigate()
-    
+
+    //Authenticates User
     async function handleLogin() {
         try {
             const result = await signInWithPopup(auth, provider);
@@ -35,7 +36,7 @@ const Login = () => {
             // Handle Errors here.
             const errorCode = error.code;
             const errorMessage = error.message;
-            alert(`${errorCode}`)
+            alert(`${errorCode} : ${errorMessage}`)
             // The email of the user's account used.
             const email = error.customData.email;
             // The AuthCredential type that was used.
@@ -44,12 +45,11 @@ const Login = () => {
     }
 
     async function getUserInformation() {
-        console.log(currentUser)
 
         //Holds info on whether the user has a collection
         const noteSnapShots = await getDocs(collection(db, currentUser.uid))
 
-        //Holds info for creating new collection if the user has noon
+        //Holds info for creating new collection if the user has none
         const notesRef = doc(db, currentUser.uid, "Welcome To Notes App")
         
         const data = {
@@ -61,7 +61,6 @@ const Login = () => {
          }
         
         if (!noteSnapShots.length){
-            console.log(noteSnapShots)
             navigate("/")
         } else {
             await setDoc(notesRef, data) 
@@ -69,6 +68,7 @@ const Login = () => {
         }
     }
     
+    //Call getUserInformation to Authenticate User if there is no user authenticated
     useEffect(() => {
         if (currentUser != ""){
             getUserInformation()

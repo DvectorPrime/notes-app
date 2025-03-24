@@ -26,6 +26,7 @@ function NoteSection(){
 
     const navigate = useNavigate()
 
+    //Updates current note's data when ever it changes
     useEffect(() => {
         setCurrentNoteData({
             heading: currentNote.heading,
@@ -38,6 +39,7 @@ function NoteSection(){
         console.log(currentNote)
     }, [currentNote])
 
+    //Holds User Changes to Note before User saves Note
     function handleChange(event){
         const {name, value} = event.target
 
@@ -50,6 +52,7 @@ function NoteSection(){
         })
     }
 
+    //Saves Note to Database
     function toogleEditing(){
         if (allowEditing){
             updateNotesDatabase()
@@ -93,12 +96,38 @@ function NoteSection(){
                 </section>
                 <section className="note-section">
                     <label htmlFor="note-title" className="note-title-label hidden">Note Title</label>
-                    <textarea name="heading" id="note-title" className={`note-title ${allowEditing && 'editable'}`} placeholder="Enter Note Title" value={currentNoteData.heading} disabled={!allowEditing} onChange={handleChange} />
+                    <textarea 
+                        name="heading" 
+                        id="note-title" 
+                        className={`note-title ${allowEditing && 'editable'}`} 
+                        placeholder="Enter Note Title" 
+                        value={currentNoteData.heading} 
+                        disabled={!allowEditing} 
+                        onChange={handleChange} 
+                    />
                     <label htmlFor="note-category" className="note-category-label hidden">Note Category</label>
-                    <input type="text" name="category" id="note-category" className={`note-category ${allowEditing && 'editable'}`} maxLength={20} value={currentNoteData.category} disabled={!allowEditing} onChange={handleChange} placeholder="ADD CATEGORY"/>
+                    <input 
+                        type="text" 
+                        name="category" 
+                        id="note-category" 
+                        className={`note-category ${allowEditing && 'editable'}`} 
+                        maxLength={20} 
+                        value={currentNoteData.category} 
+                        disabled={!allowEditing} 
+                        onChange={handleChange} 
+                        placeholder="ADD CATEGORY"
+                    />
                     <button className="edit-save-button" onClick={toogleEditing}>{!allowEditing ? 'Edit Note' : 'Save Note'}</button>
                     <button className="delete-note-button" onClick={deleteNote}>Delete Note</button>
-                    <textarea name="body" id="note-body" className={`note-body ${allowEditing && 'editable'}`} value={currentNoteData.body} disabled={!allowEditing} onChange={handleChange} placeholder="Your new note is ready"/>
+                    <textarea 
+                        name="body" 
+                        id="note-body" 
+                        className={`note-body ${allowEditing && 'editable'}`} 
+                        value={currentNoteData.body} 
+                        disabled={!allowEditing} 
+                        onChange={handleChange} 
+                        placeholder="Your new note is ready"
+                    />
                 </section>
             </main>
         </div>

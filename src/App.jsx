@@ -1,7 +1,5 @@
-import './App.css'
 import Login from './components/login'
 import TabSection from './components/Tabsection'
-import MainApp from './mainApp'
 import NoteSection from './components/NoteSection'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'

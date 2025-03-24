@@ -1,11 +1,13 @@
 .tab-page{
+    /* background-color: rgb(0, 0, 100); */
     background-color: rgb(0, 89, 255);
     height: 100vh;
     padding: 20px;
 }
 
 .tab-page.note-tab-section{
-    max-height: calc(100vh - 80px) !important;
+    margin-top: -30px;
+    max-height: calc(100vh - 50px) !important;
 }
 
 .menu-bar-button{
@@ -98,8 +100,12 @@
 
 .logo-container img{
     display: block;
-    margin: 10px auto;
+    margin: 0px auto;
     width: 150px
+}
+
+.note-tab-section .logo-container img{
+    width: 100px
 }
 
 .search-notes-field{
@@ -123,15 +129,17 @@
 
 .tabs-section{
     width: 100%;
+    max-height: calc(100vh - 350px);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     justify-items: center;
-    row-gap: 20px;
     column-gap: 20px;
+    row-gap: 20px;
 }
 
 .tabs-section.note-tab-section{
     display: block;
+    height: calc(100vh - 320px)
 }
 
 .tabs-section.note-tab-section h3{
@@ -162,13 +170,13 @@
 }
 
 .note-tab{
-    width: 100%;
+    display: block;
+    width: calc(100% - 10px);
     min-height: 120px;
     margin-bottom: 20px;
     overflow: hidden;
     background-color: rgb(27, 120, 241);
     border: 2px solid white;
-    display: block;
     position: relative;
     padding: 40px 10px 30px 10px;
     border-radius: 10px;
