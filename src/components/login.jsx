@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {app, db} from '../firebase/firebaseConfig'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDocs, collection } from "firebase/firestore"; 
 import googleIcon from '../assets/google.png';
 
 import { useAppData } from '../context/CurrentUserContext';
@@ -45,9 +45,12 @@ const Login = () => {
 
     async function getUserInformation() {
         console.log(currentUser)
+
+        //Holds info on whether the user has a collection
+        const noteSnapShots = await getDocs(collection(db, currentUser.uid))
+
+        //Holds info for creating new collection if the user has noon
         const notesRef = doc(db, currentUser.uid, "Welcome To Notes App")
-        
-        const notesInfoSnap = await getDoc(notesRef)
         
         const data = {
             id: "Welcome To Notes App",
@@ -57,7 +60,8 @@ const Login = () => {
             category: "Welcome"
          }
         
-        if (notesInfoSnap.exists()){
+        if (!noteSnapShots.length){
+            console.log(noteSnapShots)
             navigate("/")
         } else {
             await setDoc(notesRef, data) 

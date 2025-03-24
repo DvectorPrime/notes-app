@@ -1,7 +1,11 @@
 .tab-page{
     background-color: rgb(0, 89, 255);
-    min-height: 100vh;
+    height: 100vh;
     padding: 20px;
+}
+
+.tab-page.note-tab-section{
+    max-height: calc(100vh - 80px) !important;
 }
 
 .menu-bar-button{
@@ -9,6 +13,7 @@
     border: none;
     position: absolute;
     top: 10px;
+    right: 30px;
     z-index: 17;
 }
 
@@ -23,7 +28,7 @@
 .menu-bar{
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     height: 100vh;
     background-color: blue;
     max-width: 100vw;
@@ -86,12 +91,15 @@
     background-color: blue;
 }
 
-.heading{
-    font-size: 2.5rem;
-    text-align: center;
-    font-weight: bolder;
-    color: white;
-    margin-bottom: 20px;
+.logo-container{
+    display: block;
+    
+}
+
+.logo-container img{
+    display: block;
+    margin: 10px auto;
+    width: 150px
 }
 
 .search-notes-field{
@@ -155,7 +163,8 @@
 
 .note-tab{
     width: 100%;
-    max-height: 115px;
+    min-height: 120px;
+    margin-bottom: 20px;
     overflow: hidden;
     background-color: rgb(27, 120, 241);
     border: 2px solid white;
@@ -234,6 +243,7 @@
 
     .note-tab{
         width: 100%;
+        margin-bottom: 5px;
     }
     .menu-bar{
         width: 100%;

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, } from 'react';
 
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 
 import { db } from '../firebase/firebaseConfig';
 
@@ -9,6 +9,7 @@ import './tabs.css';
 
 import addSign from '../assets/add-sign.svg'
 import menuBar from '../assets/menu-bar.svg'
+import logo from '../assets/logo.png'
 import logOut from '../assets/logout.svg'
 import deleteIcon from '../assets/delete.svg'
 
@@ -17,8 +18,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 function TabSection({noteTabSection}) {
-    const {currentUser, setNotes} = useAppData();
-    const [notesInfo, setNotesInfo] = useState([]) //to hold original notes info
+    const {currentUser, setCurrentUser, notesInfo, setNotesInfo, receiveUpdates, setCurrentNote} = useAppData();
+
 
     const userPhotoURL = currentUser.photoURL
 
@@ -31,16 +32,17 @@ function TabSection({noteTabSection}) {
         }
     }
 
-    const navigate = useNavigate()
-    
     useEffect(() => {
         if (!currentUser.uid){
             navigate("/login")
+            return
         } else {
             getNotes()
         }
     }, [currentUser.uid])
 
+    const navigate = useNavigate()
+    
     const [displayNotes, setDisplayNotes] = useState(notesInfo) //to manage what is displayed to the user
     const [currentsearch, setCurrentSearch] = useState("") //Holds state of user note search
     
@@ -64,6 +66,7 @@ function TabSection({noteTabSection}) {
             }))
         }
 
+        console.log(notesInfo)
     }, [notesInfo])
 
     const [isMenuShowing, setIsMenuShowing] = useState(false)
@@ -101,6 +104,33 @@ function TabSection({noteTabSection}) {
         }
     }
 
+    async function addNote() {
+        const newNoteId = currentUser.uid + "-" + Date.now()
+        
+        const notesRef = doc(db, currentUser.uid, newNoteId)
+
+        const notesInfoSnap = await getDoc(notesRef)
+                
+        const data = {
+            id: newNoteId,
+            heading: "",
+            body: "",
+            date: Date.now(),
+            category: ""
+         }
+        if (notesInfoSnap.exists()){
+            return
+        } else {
+            await setDoc(notesRef, data) 
+            navigate("/notes")
+            receiveUpdates()
+            setCurrentNote(data)
+        }
+    }
+
+    function logOut(){
+        setCurrentUser("")
+    }
     /* Tab Components to be displayed from display notes */
 
     const arrayElements = displayNotes.map((note, index) => {
@@ -123,12 +153,12 @@ function TabSection({noteTabSection}) {
                     <img src={userPhotoURL} />
                 </div>
                 <h3 className='username'>{currentUser.displayName}</h3>
-                <button className='accounts-button log-out'><img src={logOut} />Log Out</button>
-                <button className='accounts-button delete-account'><img src={deleteIcon} />Delete Account</button>
+                <button className='accounts-button log-out' onClick={logOut}><img src={logOut} />Log Out</button>
             </aside>
-            <h1 className={`heading ${noteTabSection && 'note-tab-section'}`}>NOTES</h1>
+            {/* <h1 className={`heading ${noteTabSection && 'note-tab-section'}`}>NOTES</h1> */}
+            <div className={`logo-container ${noteTabSection && 'note-tab-section'}`}><img src={logo} alt="Notes App" /></div>
             <input className={`search-notes-field ${noteTabSection && 'note-tab-section'}`} type='search' placeholder='Search for Notes...' onChange={findNote} />
-            <button className='add-note-button'><img src={addSign} /> Add Note</button>
+            <button className='add-note-button' onClick={addNote}><img src={addSign} /> Add Note</button>
             <section className={`tabs-section ${noteTabSection && 'note-tab-section'}`}>
                 {arrayElements}
             </section>
