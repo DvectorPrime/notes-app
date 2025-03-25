@@ -13,7 +13,7 @@ How to Use the App:
 7. Log Out: Click the menu button and select 'Log out'.
 
 I Value Your Feedback!
-If you have suggestions for improvements or features you'd like to see, please let me know. Your feedback helps me make the app better for everyone! You can send your suggestions to vectorprime2024@gmail.com and we'll get to it as soon as possible.
+If you have suggestions for improvements or features you'd like to see, please let me know. Your feedback helps me make the app better for everyone! You can send your suggestions to vectorprime2024@gmail.com and i'll get to it as soon as possible.
 
 Thank you for using Vector Prime Notes!`
 
