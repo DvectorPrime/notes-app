@@ -12,7 +12,7 @@ import arrowBackIcon from "../assets/arrow_back.svg"
 
 function NoteSection(){
 
-    const {currentUser, currentNote, receiveUpdates} = useAppData()
+    const {currentUser, currentNote, receiveUpdates, theme} = useAppData()
 
     const [allowEditing, setAllowEditing] = useState(false)
 
@@ -87,19 +87,19 @@ function NoteSection(){
 
     return(
         <div className="note-page">
-            <header className="header-component">
+            <header className={`header-component ${theme === 'dark' && 'dark'}`}>
                  <button className='arrow-back-button'><img src={arrowBackIcon} onClick={goToTabs}/></button>
             </header>
             <main className="note-main">
                 <section className="tab-section">
                     <TabSection noteTabSection={true} allowEditing={true} />
                 </section>
-                <section className="note-section">
+                <section className={`note-section ${theme === 'dark' && 'dark'}`}>
                     <label htmlFor="note-title" className="note-title-label hidden">Note Title</label>
                     <textarea 
                         name="heading" 
                         id="note-title" 
-                        className={`note-title ${allowEditing && 'editable'}`} 
+                        className={`note-title ${allowEditing && 'editable'} ${theme === 'dark' && 'dark'}`} 
                         placeholder="Enter Note Title" 
                         value={currentNoteData.heading} 
                         disabled={!allowEditing} 
@@ -110,19 +110,19 @@ function NoteSection(){
                         type="text" 
                         name="category" 
                         id="note-category" 
-                        className={`note-category ${allowEditing && 'editable'}`} 
+                        className={`note-category ${allowEditing && 'editable'} ${theme === 'dark' && 'dark'}`} 
                         maxLength={20} 
                         value={currentNoteData.category} 
                         disabled={!allowEditing} 
                         onChange={handleChange} 
                         placeholder="ADD CATEGORY"
                     />
-                    <button className="edit-save-button" onClick={toogleEditing}>{!allowEditing ? 'Edit Note' : 'Save Note'}</button>
-                    <button className="delete-note-button" onClick={deleteNote}>Delete Note</button>
+                    <button className={`edit-save-button ${theme === 'dark' && 'dark'}`} onClick={toogleEditing}>{!allowEditing ? 'Edit Note' : 'Save Note'}</button>
+                    <button className={`delete-note-button ${theme === 'dark' && 'dark'}`} onClick={deleteNote}>Delete Note</button>
                     <textarea 
                         name="body" 
                         id="note-body" 
-                        className={`note-body ${allowEditing && 'editable'}`} 
+                        className={`note-body ${allowEditing && 'editable'} ${theme === 'dark' && 'dark'}`} 
                         value={currentNoteData.body} 
                         disabled={!allowEditing} 
                         onChange={handleChange} 

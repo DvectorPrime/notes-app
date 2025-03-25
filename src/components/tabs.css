@@ -1,5 +1,4 @@
 .tab-page{
-    /* background-color: rgb(0, 0, 100); */
     background-color: rgb(0, 89, 255);
     height: 100vh;
     padding: 20px;
@@ -8,6 +7,10 @@
 .tab-page.note-tab-section{
     margin-top: -30px;
     max-height: calc(100vh - 50px) !important;
+}
+
+.tab-page.dark{
+    background-color: rgb(0, 0, 100);
 }
 
 .menu-bar-button{
@@ -37,6 +40,10 @@
     width: 400px;
     padding: 100px 10px;
     z-index: 15;
+}
+
+.menu-bar.dark{
+    background-color: rgb(1, 1, 136);
 }
 
 .menu-bar .user-photo{
@@ -102,6 +109,45 @@
     display: block;
     margin: 0px auto;
     width: 150px
+}
+
+.theme{
+    position: absolute;
+    top: 20px;
+    right: 150px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 20;
+}
+
+.theme p {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.light{
+    color: white
+}
+
+.dark{
+    color: black;
+}
+
+.toggle-bar{
+    width: 70px;
+    height: 46px;
+    border-radius: 30px;
+    padding: 3px;
+    background-color: rgb(27, 120, 241);
+    cursor: pointer;
+}
+
+.toggle-thumb{
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
 }
 
 .note-tab-section .logo-container img{
@@ -237,6 +283,10 @@
     .menu-bar-button img{
         width: 40px
     }
+
+    .theme{
+        left: 30px;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -253,7 +303,35 @@
         width: 100%;
         margin-bottom: 5px;
     }
+
     .menu-bar{
         width: 100%;
+    }
+
+    .theme {
+        gap: 5px;
+        left: 10px
+    }
+
+    .theme p{
+        font-size: 0.8rem;
+    }
+    
+    .toggle-bar{
+        width: 35px;
+        height: 24px;
+        border-radius: 30px;
+        padding: 1px;
+        background-color: rgb(27, 120, 241);
+        cursor: pointer;
+        transition: all 1s;
+    }
+    
+    .toggle-thumb{
+        width: 13px;
+        height: 13px;
+        background-color: white;
+        border-radius: 50%;
+        transition: all 1s;
     }
 }

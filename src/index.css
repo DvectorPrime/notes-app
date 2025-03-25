@@ -4,6 +4,7 @@
   box-sizing: border-box;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
+  transition: all 1.5s;
 }
 
 body{

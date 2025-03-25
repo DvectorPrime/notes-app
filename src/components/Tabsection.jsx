@@ -5,6 +5,7 @@ import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 import Tab from './singleComponents/tab';
+import ToggleTheme from './singleComponents/toggleTheme';
 import './tabs.css';
 
 import addSign from '../assets/add-sign.svg'
@@ -17,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function TabSection({noteTabSection}) {
-    const {currentUser, setCurrentUser, notesInfo, setNotesInfo, receiveUpdates, setCurrentNote} = useAppData();
+    const {currentUser, setCurrentUser, notesInfo, setNotesInfo, receiveUpdates, setCurrentNote, theme} = useAppData();
 
     const userPhotoURL = currentUser.photoURL
 
@@ -90,7 +91,7 @@ function TabSection({noteTabSection}) {
                 return (
                     noteCategory.includes(searchValue.substring(1))
                 )
-            }))
+            }).sort((noteA, noteB) => Number(noteB.date) - Number(noteA.date)))
         } else {
             setDisplayNotes(notesInfo.filter(note => {
                 const noteTitle = (note.heading).toLowerCase()
@@ -100,7 +101,7 @@ function TabSection({noteTabSection}) {
                 return (
                     noteTitle.includes(searchValue)
                 )
-            }))
+            }).sort((noteA, noteB) => Number(noteB.date) - Number(noteA.date)))
         }
     }
 
@@ -146,9 +147,10 @@ function TabSection({noteTabSection}) {
     })
 
     return (
-        <main className={`tab-page ${noteTabSection && 'note-tab-section'}`}>
+        <main className={`tab-page ${noteTabSection && 'note-tab-section'} ${theme === 'dark' && 'dark'}`}>
             <button className='menu-bar-button'><img src={isMenuShowing ? closeIcon : menuBar} onClick={toggleMenu}/></button>
-            <aside className='menu-bar' style={{display: isMenuShowing ? 'block' : 'none'}}>
+            <ToggleTheme />
+            <aside className={`menu-bar ${theme === 'dark' && 'dark'}`} style={{display: isMenuShowing ? 'block' : 'none'}}>
                 <div className='user-photo'>
                     <img src={userPhotoURL} />
                 </div>

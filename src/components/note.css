@@ -8,7 +8,10 @@
     width: 100%;
     height: 80px;
     background-color: rgb(0, 89, 255);
-    /* background-color: rgb(0, 0, 100);; */
+}
+
+.header-component.dark{
+    background-color: rgb(0, 0, 100);
 }
 
 .arrow-back-button{
@@ -42,11 +45,11 @@
 .note-section{
     height: calc(100vh - 80px);
     padding: 20px;
-    /* background-color: red; */
+    display: block;
 }
 
-.note-section {
-    display: block;
+.note-section.dark {
+    background-color: rgb(20, 20, 150);
 }
 
 .note-title{
@@ -62,9 +65,21 @@
     max-height: fit-content;
 }
 
+.note-title::placeholder{
+    color: black
+}
+
 .note-title.editable{
     outline: 2px solid rgb(0, 89, 255);
     border: none;
+}
+
+.note-title.dark{
+    color: white;
+}
+
+.note-title.dark::placeholder{
+    color: white;
 }
 
 .note-category{
@@ -78,9 +93,21 @@
     background-color: transparent;
 }
 
+.note-category::placeholder{
+    color: black;
+}
+
 .note-category.editable{
     outline: none;
     border-bottom: 2px solid rgb(0, 89, 255);
+}
+
+.note-category.dark{
+    color: white
+}
+
+.note-category.dark::placeholder{
+    color: white;
 }
 
 .edit-save-button, .delete-note-button{
@@ -96,6 +123,10 @@
     margin-right: 20px;
 }
 
+.edit-save-button.dark, .delete-note-button.dark{
+    background-color: rgb(0, 0, 100);
+}
+
 .edit-save-button:hover, .delete-note-button:hover{
     background-color: red;
 }
@@ -107,6 +138,18 @@
     resize: none;
     background-color: transparent;
     border: none;
+}
+
+.note-body::placeholder{
+    color: black
+}
+
+.note-body.dark{
+    color: white;
+}
+
+.note-body.dark::placeholder{
+    color: white;
 }
 
 .note-body.editable{

@@ -6,11 +6,13 @@ import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import googleIcon from '../assets/google.png';
 
 import { useAppData } from '../context/CurrentUserContext';
+import ToggleTheme from './singleComponents/toggleTheme';
+import welcomeMessage from '../assets/welcome_data';
 import "./login.css"
 
 const Login = () => {
     
-    const {currentUser, setCurrentUser} = useAppData()
+    const {currentUser, setCurrentUser, theme} = useAppData()
     
     const provider = new GoogleAuthProvider();
     
@@ -55,12 +57,12 @@ const Login = () => {
         const data = {
             id: "Welcome To Notes App",
             heading: "A guide on how to use the notes app",
-            body: "This is a very long piece of Information",
+            body: welcomeMessage,
             date: Date.now(),
             category: "Welcome"
          }
         
-        if (!noteSnapShots.length){
+        if (noteSnapShots.length){
             navigate("/")
         } else {
             await setDoc(notesRef, data) 
@@ -76,13 +78,14 @@ const Login = () => {
     }, [currentUser])
 
     return (
-        <div className='login-page'>
+        <div className={`login-page ${theme === 'dark' && 'dark'}`}>
             <title>Login</title>
+            <ToggleTheme />
             <div className='login-page-banner'>
                 <h1>NOTES APP</h1>
                 <p>Sign in to access your notes anytime, anywhere on any device</p>
             </div>
-            <div className='login-container'>
+            <div className={`login-container ${theme === 'dark' && 'dark'}`}>
                 <h3>Login to Notes App</h3>
                 <button className='login-button' onClick={handleLogin}>
                     <img src={googleIcon} />
